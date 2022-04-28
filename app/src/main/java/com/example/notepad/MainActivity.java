@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Settings.load(this);
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
         binding=ActivityMainBinding.inflate(getLayoutInflater());
@@ -48,13 +49,13 @@ public class MainActivity extends AppCompatActivity {
 //        return super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case R.id.settingsMenu:
-                Toast.makeText(MainActivity.this, "Settings Menu Item",
-                        Toast.LENGTH_LONG).show();
-                FileManager.write(MainActivity.this, "");
+//                FileManager.write(MainActivity.this, "");
+                /*Settings.getSettings().fontSize = 18;
+                Settings.save(this);*/
                 break;
             case R.id.saveMenu:
                 Toast.makeText(MainActivity.this,
-                        "The text has been saved successfully",
+                        "Text saved",
                         Toast.LENGTH_LONG).show();
 
                 String textToSave = binding.textNote.getText().toString();
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.loadMenu:
                 Toast.makeText(
                         MainActivity.this,
-                        "File is open successfully",
+                        "Text loaded",
                         Toast.LENGTH_LONG).show();
                 String textFromFile = FileManager.read(MainActivity.this);
                 binding.textNote.setText(textFromFile);
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.e("FF", "pause");
+        Settings.save(this);
     }
 
     @Override
