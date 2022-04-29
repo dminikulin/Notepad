@@ -91,4 +91,7 @@ public class DBManager extends SQLiteOpenHelper {
             );
         return null;
     }
+
+    public void update(Note note) {
+    }
 }
