@@ -3,7 +3,6 @@ package com.example.notepad;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,7 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.notepad.databinding.ActivityMainBinding;
-import com.google.gson.Gson;
+import com.example.notepad.tools.Settings;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;

@@ -3,14 +3,15 @@ package com.example.notepad;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.notepad.data.Note;
 import com.example.notepad.databinding.ActivityNoteBinding;
+import com.example.notepad.tools.Keys;
 
 import java.time.LocalDateTime;
 
@@ -30,13 +31,15 @@ public class NoteActivity extends AppCompatActivity {
         int id = getIntent().getIntExtra("note_ID", 0);
         Note note = manager.findByID(id);*/
 
-        note = (Note) getIntent().getSerializableExtra("note");
+        note = (Note) getIntent().getSerializableExtra(Keys.NOTE_KEY.name());
 
-        Log.e("FF", String.valueOf(note));
+//        Log.e("FF", String.valueOf(note));
+        if(note != null){
         binding.noteId.setText(String.valueOf(note.getId()));
         binding.noteHeader.setText(note.getHeader());
         binding.noteTime.setText(note.getTimeInString());
         binding.noteText.setText(note.getText());
+        }
     }
 
     @Override

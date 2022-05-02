@@ -1,13 +1,11 @@
-package com.example.notepad;
+package com.example.notepad.tools;
 
 import android.content.Context;
 
 import com.google.gson.Gson;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.nio.charset.StandardCharsets;
 
 public class Settings {
     private static final String FILE_NAME = "settings";

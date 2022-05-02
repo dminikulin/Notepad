@@ -1,4 +1,4 @@
-package com.example.notepad;
+package com.example.notepad.data;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -93,5 +93,9 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     public void update(Note note) {
+        db=getReadableDatabase();
+        String sql = "update %s set %s='%s', %s='%s' where %s='%s'";
+        sql=String.format(sql, TAB, HEADER, note.getHeader(), TEXT, note.getText(), ID, note.getId());
+        db.execSQL(sql);
     }
 }

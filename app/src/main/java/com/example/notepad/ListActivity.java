@@ -5,14 +5,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
-import java.io.Serializable;
+import com.example.notepad.data.DBManager;
+import com.example.notepad.data.Note;
+import com.example.notepad.tools.Keys;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -66,7 +67,7 @@ public class ListActivity extends AppCompatActivity {
                     Log.e("FF", " " + result);
                     if(result.getResultCode() == RESULT_OK){
                         Intent data = result.getData();
-                        Note note = (Note) data.getSerializableExtra("note");
+                        Note note = (Note) data.getSerializableExtra(Keys.NOTE_KEY.name());
                         int index = data.getIntExtra("index", -1);
                         if(note != null && index > -1){
                             dbManager.update(note);
@@ -84,7 +85,7 @@ public class ListActivity extends AppCompatActivity {
 
 //            intent.putExtra("note_ID", (int)l);
             Note note = dbManager.findByID((int)l);
-            intent.putExtra("note", note);
+            intent.putExtra(Keys.NOTE_KEY.name(), note);
             intent.putExtra("index", i);
 
 //            startActivity(intent);

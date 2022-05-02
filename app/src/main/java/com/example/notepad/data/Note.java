@@ -1,4 +1,4 @@
-package com.example.notepad;
+package com.example.notepad.data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
