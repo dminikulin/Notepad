@@ -94,8 +94,24 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void update(Note note) {
         db=getReadableDatabase();
-        String sql = "update %s set %s='%s', %s='%s' where %s='%s'";
+        String sql = "update %s set %s='%s', %s='%s' where %s=%s";
         sql=String.format(sql, TAB, HEADER, note.getHeader(), TEXT, note.getText(), ID, note.getId());
+        db.execSQL(sql);
+    }
+
+    @SuppressLint("Range")
+    public void deleteByID(int id){
+        db=getReadableDatabase();
+        String sql = "delete from %s where %s=%s";
+        sql = String.format(sql, TAB, ID, id);
+        db.execSQL(sql);
+    }
+
+    @SuppressLint("Range")
+    public void deleteAll(){
+        db=getReadableDatabase();
+        String sql = "delete from %s";
+        sql = String.format(sql, TAB);
         db.execSQL(sql);
     }
 }
