@@ -4,20 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.notepad.data.Note;
 import com.example.notepad.databinding.ActivityNoteBinding;
 import com.example.notepad.tools.Keys;
+import com.example.notepad.tools.TextStyle;
 
 import java.time.LocalDateTime;
 
 public class NoteActivity extends AppCompatActivity {
     private ActivityNoteBinding binding;
     private Note note;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +39,14 @@ public class NoteActivity extends AppCompatActivity {
         note = (Note) getIntent().getSerializableExtra(Keys.NOTE_KEY.name());
 
 //        Log.e("FF", String.valueOf(note));
-        if(note != null){
-        binding.noteId.setText(String.valueOf(note.getId()));
-        binding.noteHeader.setText(note.getHeader());
-        binding.noteTime.setText(note.getTimeInString());
-        binding.noteText.setText(note.getText());
+        if (note != null) {
+            binding.noteId.setText(String.valueOf(note.getId()));
+            binding.noteHeader.setText(note.getHeader());
+            binding.noteTime.setText(note.getTimeInString());
+            binding.noteText.setText(note.getText());
         }
+
+        binding.styleButton.setOnCreateContextMenuListener(this);
     }
 
     @Override
@@ -50,8 +57,8 @@ public class NoteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.saveNoteMenu){
-            if(note == null) note = new Note();
+        if (item.getItemId() == R.id.saveNoteMenu) {
+            if (note == null) note = new Note();
             note.setHeader(binding.noteHeader.getText().toString());
             note.setTime(LocalDateTime.now());
             note.setText(binding.noteTime.getText().toString());
@@ -69,5 +76,35 @@ public class NoteActivity extends AppCompatActivity {
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         super.onBackPressed();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, v, menuInfo);
+        switch (v.getId()) {
+            case R.id.styleButton:
+                menu.setHeaderTitle("STYLE");
+                getMenuInflater().inflate(R.menu.style_note_menu, menu);
+                break;
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+//        return super.onContextItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.regularMenu:
+                TextStyle.styleClear(binding.noteText);
+                break;
+            case R.id.boldMenu:
+                TextStyle.style(binding.noteText, Typeface.BOLD);
+                break;
+            case R.id.italicMenu:
+                TextStyle.style(binding.noteText, Typeface.ITALIC);
+                break;
+            case R.id.underlinedMenu:
+                break;
+        }
+        return true;
     }
 }
