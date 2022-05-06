@@ -1,9 +1,12 @@
 package com.example.notepad;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +14,20 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.PopupMenu;
 
 import com.example.notepad.data.Note;
 import com.example.notepad.databinding.ActivityNoteBinding;
 import com.example.notepad.tools.Keys;
 import com.example.notepad.tools.TextStyle;
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
+import com.jaredrummler.android.colorpicker.ColorShape;
 
 import java.time.LocalDateTime;
 
-public class NoteActivity extends AppCompatActivity {
+public class NoteActivity extends AppCompatActivity implements ColorPickerDialogListener {
     private ActivityNoteBinding binding;
     private Note note;
 
@@ -46,7 +54,42 @@ public class NoteActivity extends AppCompatActivity {
             binding.noteText.setText(note.getText());
         }
 
-        binding.styleButton.setOnCreateContextMenuListener(this);
+//        binding.styleButton.setOnCreateContextMenuListener(this);
+//        binding.styleButton.setOnClickListener(NoteActivity.this::openContextMenu);
+        PopupMenu stylePopupMenu = new PopupMenu(this, binding.styleButton);
+        stylePopupMenu.inflate(R.menu.style_popup_menu);
+        stylePopupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.regularMenu:
+                    TextStyle.styleClear(binding.noteText);
+                    break;
+                case R.id.boldMenu:
+                    TextStyle.style(binding.noteText, Typeface.BOLD);
+                    break;
+                case R.id.italicMenu:
+                    TextStyle.style(binding.noteText, Typeface.ITALIC);
+                    break;
+                case R.id.underlinedMenu:
+                    break;
+            }
+            return true;
+        });
+        binding.styleButton.setOnClickListener(view -> stylePopupMenu.show());
+        binding.colorButton.setOnClickListener(this::createColorDialog);
+        binding.backgroundButton.setOnClickListener(this::createColorDialog);
+        binding.clearAllStylesButton.setOnClickListener(view->{
+            new AlertDialog.Builder(this)
+                    .setTitle("Clear all styles?")
+                    .setCancelable(true)
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                        Log.e("FF", "alert cancelled");
+                    })
+                    .setPositiveButton("OK", ((dialogInterface, i) -> {
+                        TextStyle.clearAll(binding.noteText);
+                    }))
+                    .create()
+                    .show();
+        });
     }
 
     @Override
@@ -84,7 +127,7 @@ public class NoteActivity extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.styleButton:
                 menu.setHeaderTitle("STYLE");
-                getMenuInflater().inflate(R.menu.style_note_menu, menu);
+                getMenuInflater().inflate(R.menu.style_context_menu, menu);
                 break;
         }
     }
@@ -92,19 +135,38 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
 //        return super.onContextItemSelected(item);
-        switch (item.getItemId()) {
-            case R.id.regularMenu:
-                TextStyle.styleClear(binding.noteText);
-                break;
-            case R.id.boldMenu:
-                TextStyle.style(binding.noteText, Typeface.BOLD);
-                break;
-            case R.id.italicMenu:
-                TextStyle.style(binding.noteText, Typeface.ITALIC);
-                break;
-            case R.id.underlinedMenu:
+        switch(item.getItemId()){
+            case R.id.clearStylesMenu:
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+        if(dialogId==R.id.colorButton){
+            Log.e("FF", "" + color);
+            TextStyle.setColor(binding.noteText, color);
+        }
+        else if(dialogId==R.id.backgroundButton){}
+    }
+
+    @Override
+    public void onDialogDismissed(int dialogId) {
+
+    }
+
+    private void createColorDialog(View view){
+        ColorPickerDialog.newBuilder()
+                .setDialogType(ColorPickerDialog.TYPE_PRESETS)
+                .setColor(Color.RED)
+                .setAllowCustom(true)
+                .setAllowPresets(true)
+                .setColorShape(ColorShape.CIRCLE)
+                .setDialogId(view.getId())
+                .show(this);
+
+        InputMethodManager inputMethod = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethod.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

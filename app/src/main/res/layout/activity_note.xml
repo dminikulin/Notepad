@@ -59,6 +59,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Style" />
+
+        <Button
+            android:id="@+id/clearAllStylesButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Clear" />
+
     </LinearLayout>
 
     <EditText

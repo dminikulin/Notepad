@@ -3,8 +3,11 @@ package com.example.notepad.tools;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.widget.EditText;
+
+import androidx.annotation.ColorInt;
 
 public class TextStyle {
     public static void style(EditText editText, int typeFace){
@@ -32,6 +35,18 @@ public class TextStyle {
                 StyleSpan.class
         );
         for(Object s: spans) sp.removeSpan(s);
+        editText.setText(sp);
+    }
+
+    public static void setColor(EditText editText, @ColorInt int color){
+        SpannableString sp = new SpannableString(editText.getText());
+        ForegroundColorSpan styleSpan = new ForegroundColorSpan(color);
+        sp.setSpan(
+                styleSpan,
+                editText.getSelectionStart(),
+                editText.getSelectionEnd(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
         editText.setText(sp);
     }
 }

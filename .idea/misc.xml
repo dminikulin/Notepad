@@ -11,6 +11,8 @@
         <entry key="app/src/main/res/menu/color_note_menu.xml" value="0.231722958529286" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/menu/note_menu.xml" value="0.231722958529286" />
+        <entry key="app/src/main/res/menu/style_clear_menu.xml" value="0.231722958529286" />
+        <entry key="app/src/main/res/menu/style_note_menu.xml" value="0.22878851836217814" />
       </map>
     </option>
   </component>
