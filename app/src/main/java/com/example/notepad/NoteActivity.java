@@ -148,7 +148,10 @@ public class NoteActivity extends AppCompatActivity implements ColorPickerDialog
             Log.e("FF", "" + color);
             TextStyle.setColor(binding.noteText, color);
         }
-        else if(dialogId==R.id.backgroundButton){}
+        else if(dialogId==R.id.backgroundButton){
+//            Log.e("FF", "" + color);
+            TextStyle.setBackgroundColor(binding.noteText, color);
+        }
     }
 
     @Override

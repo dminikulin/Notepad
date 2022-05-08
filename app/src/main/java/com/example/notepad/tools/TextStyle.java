@@ -3,6 +3,7 @@ package com.example.notepad.tools;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.widget.EditText;
@@ -41,6 +42,18 @@ public class TextStyle {
     public static void setColor(EditText editText, @ColorInt int color){
         SpannableString sp = new SpannableString(editText.getText());
         ForegroundColorSpan styleSpan = new ForegroundColorSpan(color);
+        sp.setSpan(
+                styleSpan,
+                editText.getSelectionStart(),
+                editText.getSelectionEnd(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        editText.setText(sp);
+    }
+
+    public static void setBackgroundColor(EditText editText, @ColorInt int color){
+        SpannableString sp = new SpannableString(editText.getText());
+        BackgroundColorSpan styleSpan = new BackgroundColorSpan(color);
         sp.setSpan(
                 styleSpan,
                 editText.getSelectionStart(),
