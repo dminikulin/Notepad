@@ -2,8 +2,11 @@ package com.example.notepad.data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Note implements Serializable {
+    private static final DateTimeFormatter TIME_FORMATTER
+            = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private int id;
     private String header;
     private LocalDateTime time;
@@ -25,6 +28,7 @@ public class Note implements Serializable {
         this.header = header;
         this.time = LocalDateTime.parse(time);
         this.text = text;
+        setTimeWithString(time);
     }
 
     public int getId() {
@@ -52,11 +56,11 @@ public class Note implements Serializable {
     }
 
     public String getTimeInString() {
-        return time.toString();
+        return time.format(TIME_FORMATTER);
     }
 
     public void setTimeWithString(String time) {
-        this.time = LocalDateTime.parse(time);
+        this.time = LocalDateTime.parse(time, TIME_FORMATTER);
     }
 
     public String getText() {
@@ -69,11 +73,7 @@ public class Note implements Serializable {
 
     @Override
     public String toString() {
-        return "Note{" +
-                "id=" + id +
-                ", header='" + header + '\'' +
-                ", time=" + time +
-                ", text='" + text + '\'' +
-                '}';
+        return String.format("%s    %s  %s\n%s",
+                id, header, getTimeInString(), text);
     }
 }
